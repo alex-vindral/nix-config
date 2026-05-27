@@ -1,0 +1,22 @@
+{inputs, ...}: {
+  flake-file.inputs = {
+    nix-nvim = {
+      url = "github:buungoo/nix-nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  bungo.aspects.nvim = {
+    homeManager = {pkgs, ...}: {
+      nixpkgs.config.allowUnfree = true;
+      home.packages = [inputs.nix-nvim.packages.${pkgs.system}.nvim];
+
+      home.sessionVariables = {
+        EDITOR = "nvim";
+        VISUAL = "nvim";
+      };
+
+      programs.git.settings.core.editor = "nvim";
+    };
+  };
+}
