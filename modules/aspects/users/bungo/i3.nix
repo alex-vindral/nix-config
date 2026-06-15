@@ -5,6 +5,15 @@
     ];
 
     homeManager = {
+      services.picom = {
+        enable = true;
+        backend = "glx";
+        vSync = true;
+        settings = {
+          use-damage = true;
+        };
+      };
+
       xsession.windowManager.i3 = {
         enable = true;
         config = {
@@ -23,6 +32,11 @@
           startup = [
             {
               command = "xset s off -dpms s noblank";
+              notification = false;
+            }
+            {
+              command = "systemctl --user restart picom.service";
+              always = true;
               notification = false;
             }
           ];
@@ -75,15 +89,10 @@
     };
 
     nixos = {
-      config,
       lib,
       pkgs,
       ...
-    }: let
-      nvidiaDrivesDisplay =
-        builtins.elem "nvidia" config.services.xserver.videoDrivers
-        && !config.hardware.nvidia.prime.offload.enable;
-    in {
+    }: {
       services.xserver = {
         enable = true;
         xkb = {
@@ -96,17 +105,6 @@
           generateScript = true;
         };
         windowManager.i3.enable = true;
-
-        screenSection =
-          if nvidiaDrivesDisplay
-          then ''
-            Option "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
-            Option "AllowIndirectGLXProtocol" "off"
-            Option "TripleBuffer" "on"
-          ''
-          else ''
-            Option "TearFree" "true"
-          '';
       };
 
       services.displayManager.defaultSession = lib.mkDefault "none+i3";

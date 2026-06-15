@@ -12,6 +12,8 @@
           theme = "Kanagawa Wave";
           font-family = "MesloLGS Nerd Font";
           background-opacity = 0.98;
+          clipboard-read = "allow";
+          clipboard-write = "allow";
           resize-overlay = "never";
           app-notifications = "no-clipboard-copy";
           window-decoration = "none";

@@ -7,12 +7,14 @@
     includes = [
       den.batteries.primary-user # For wheel
 
+      # bungo.aspects.kanata
+      bungo.aspects.spotify
       bungo.aspects.audio
-      bungo.aspects.awscli
       bungo.aspects.bluetooth
       bungo.aspects.claude
       bungo.aspects.direnv
       bungo.aspects.docker
+      bungo.aspects.dua
       bungo.aspects.easyeffects
       bungo.aspects.eza
       bungo.aspects.ghostty
@@ -25,13 +27,15 @@
       bungo.aspects.remmina
       bungo.aspects.s3
       bungo.aspects.slack
+      bungo.aspects.slk
       bungo.aspects.sops
-      bungo.aspects.spotify
       bungo.aspects.ssh
+      bungo.aspects.sway
       bungo.aspects.tealdeer
       bungo.aspects.teams
       bungo.aspects.unzip
       bungo.aspects.vivaldi
+      bungo.aspects.vm
       bungo.aspects.yazi
       bungo.aspects.zoxide
       bungo.aspects.zsh

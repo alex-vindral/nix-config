@@ -29,8 +29,8 @@
         Service = {
           Type = "notify";
           ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/s3";
-          ExecStart = "${pkgs.rclone}/bin/rclone --config ${config.sops.templates."rclone.conf".path} mount composer:composer-storage %h/s3 --vfs-cache-mode writes --dir-cache-time 1h";
-          ExecStop = "/run/wrappers/bin/fusermount -u %h/s3";
+          ExecStart = "${pkgs.rclone}/bin/rclone --config ${config.sops.templates."rclone.conf".path} mount composer:composer-storage %h/s3 --vfs-cache-mode writes --dir-cache-time 1h --rc --rc-no-auth";
+          ExecStop = "/run/wrappers/bin/fusermount -uz %h/s3";
           Restart = "on-failure";
           RestartSec = 5;
         };

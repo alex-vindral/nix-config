@@ -4,10 +4,13 @@
       burken.aspects.system
       burken.aspects.nvidia
       burken.aspects.igpu
+      burken.aspects.vfio
       burken.aspects.sops
     ];
 
     nixos = {pkgs, ...}: {
+      programs.nix-ld.enable = true;
+
       # iGPU drives the display; dGPU is used on demand via `nvidia-offload`.
       hardware.nvidia.prime = {
         offload = {

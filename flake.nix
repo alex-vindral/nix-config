@@ -23,10 +23,14 @@
       url = "github:buungoo/nix-nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-secrets.url = "git+file:///home/bungo/.nixos/nix-secrets";
+    nix-secrets.url = "git+ssh://git@github.com/alex-vindral/nix-secrets.git";
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     sops-nix = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wl-app-fullscreen = {
+      url = "github:w9n/wl-app-fullscreen";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -3,15 +3,28 @@
   coreutils,
   findutils,
   gnugrep,
+  rclone,
 }:
 writeShellApplication {
   name = "pull";
-  runtimeInputs = [coreutils findutils gnugrep];
+  runtimeInputs = [coreutils findutils gnugrep rclone];
   text = ''
     BASE="$HOME/s3/Testresults"
     SELECTED=""
 
+    # Invalidate the rclone VFS dir/metadata cache so freshly written
+    # files (and appended log content) on S3 are visible. The S3 backend
+    # can't poll for changes, so without this we'd serve cached state for
+    # up to --dir-cache-time. Best-effort: if the rc API is unreachable
+    # (mount not running with --rc), fall back to whatever is cached.
+    refresh() {
+      local rel="''${1#"$HOME"/s3/}"
+      rclone rc vfs/refresh dir="$rel" recursive="''${2:-false}" \
+        >/dev/null 2>&1 || true
+    }
+
     list_folders() {
+      refresh "$1"
       if [ -d "$1" ]; then
         find "$1" -mindepth 1 -maxdepth 1 -type d -printf '%f\n'
       fi
@@ -80,6 +93,11 @@ writeShellApplication {
     echo ""
     echo "$LOG_PATH"
     echo ""
+
+    # Recursively refresh the selected run so file sizes/contents are
+    # current before we read them — this is what was stale when an
+    # [Error] line got appended on S3 after the dir was first cached.
+    refresh "$LOG_PATH" true
 
     found_any=0
 
