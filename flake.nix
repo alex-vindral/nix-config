@@ -24,6 +24,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-secrets.url = "git+ssh://git@github.com/alex-vindral/nix-secrets.git";
+    nixos-wsl = {
+      url = "github:nix-community/nixos-wsl";
+      inputs = {
+        flake-compat.follows = "";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz";
     sops-nix = {
       url = "github:Mic92/sops-nix";

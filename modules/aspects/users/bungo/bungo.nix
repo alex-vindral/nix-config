@@ -1,54 +1,46 @@
 {
   den,
   bungo,
+  lib,
   ...
 }: {
-  den.aspects.bungo = {
-    includes = [
-      den.batteries.primary-user # For wheel
+  # Parametric on host so the desktop bundle only resolves on graphical
+  # hosts. Anything in the unconditional `includes` list runs on every
+  # host this user lives on (burken, wsl, future).
+  den.aspects.bungo = {host, ...}: {
+    includes =
+      [
+        den.batteries.primary-user # For wheel
 
-      # bungo.aspects.kanata
-      bungo.aspects.spotify
-      bungo.aspects.audio
-      bungo.aspects.bluetooth
-      bungo.aspects.claude
-      bungo.aspects.direnv
-      bungo.aspects.docker
-      bungo.aspects.dua
-      bungo.aspects.easyeffects
-      bungo.aspects.eza
-      bungo.aspects.ghostty
-      bungo.aspects.git
-      bungo.aspects.i3
-      bungo.aspects.logitech
-      bungo.aspects.nh
-      bungo.aspects.nvim
-      bungo.aspects.opencode
-      bungo.aspects.remmina
-      bungo.aspects.s3
-      bungo.aspects.slack
-      bungo.aspects.slk
-      bungo.aspects.sops
-      bungo.aspects.ssh
-      bungo.aspects.sway
-      bungo.aspects.tealdeer
-      bungo.aspects.teams
-      bungo.aspects.unzip
-      bungo.aspects.vivaldi
-      bungo.aspects.vm
-      bungo.aspects.yazi
-      bungo.aspects.zoxide
-      bungo.aspects.zsh
-    ];
-
-    nixos = {pkgs, ...}: {
-      users.users.bungo.packages = with pkgs; [
-        tree
-        btop
+        # Core — every host
+        bungo.aspects.btop
+        bungo.aspects.claude
+        bungo.aspects.direnv
+        bungo.aspects.dua
+        bungo.aspects.eza
+        bungo.aspects.gh
+        bungo.aspects.ghostty
+        bungo.aspects.git
+        bungo.aspects.nh
+        bungo.aspects.nvim
+        bungo.aspects.opencode
+        bungo.aspects.slk
+        bungo.aspects.ssh
+        bungo.aspects.tealdeer
+        bungo.aspects.unzip
+        bungo.aspects.yazi
+        bungo.aspects.zoxide
+        bungo.aspects.zsh
+      ]
+      # Graphical / hardware / secret-dependent — only on hosts that want it.
+      # Add another host name here when a new graphical host comes online.
+      ++ lib.optionals (host.name == "burken") [
+        bungo.aspects.desktop
       ];
-    };
 
-    homeManager = {
+    homeManager = {pkgs, ...}: {
+      home.packages = [pkgs.tree];
+
       xdg.userDirs = {
         enable = true;
         createDirectories = true;

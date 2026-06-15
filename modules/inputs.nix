@@ -19,15 +19,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ## these stable inputs are for wsl
-    #nixpkgs-stable.url = "github:nixos/nixpkgs/release-25.05";
-    #home-manager-stable.url = "github:nix-community/home-manager/release-25.05";
-    #home-manager-stable.inputs.nixpkgs.follows = "nixpkgs-stable";
-
-    #nixos-wsl = {
-    #  url = "github:nix-community/nixos-wsl";
-    #  inputs.nixpkgs.follows = "nixpkgs-stable";
-    #  inputs.flake-compat.follows = "";
-    #};
+    nixos-wsl = {
+      url = "github:nix-community/nixos-wsl";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "";
+    };
   };
 }

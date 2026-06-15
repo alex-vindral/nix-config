@@ -17,6 +17,10 @@
 
   # Hosts and homes
   den.hosts.x86_64-linux.burken.users.bungo = {};
+  den.hosts.x86_64-linux.wsl = {
+    wsl.enable = true; # provided by den.batteries' wsl-host-aspect
+    users.bungo = {};
+  };
   den.homes.x86_64-linux.bungo = {};
 
   # enable hm for all users

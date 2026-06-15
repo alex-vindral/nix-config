@@ -325,6 +325,27 @@
         "url": "ssh://git@github.com/alex-vindral/nix-secrets.git"
       }
     },
+    "nixos-wsl": {
+      "inputs": {
+        "flake-compat": [],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781182279,
+        "narHash": "sha256-V5EQQbDnmdiXGQXrEF1PEL7QYsFqfH8N1E89Z5ONwFk=",
+        "owner": "nix-community",
+        "repo": "nixos-wsl",
+        "rev": "5675822ba756e6e56f8f6a5a76e90e0da2ece94d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixos-wsl",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1780365719,
@@ -443,6 +464,7 @@
         "import-tree": "import-tree",
         "nix-nvim": "nix-nvim",
         "nix-secrets": "nix-secrets",
+        "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
         "sops-nix": "sops-nix",
         "wl-app-fullscreen": "wl-app-fullscreen"
