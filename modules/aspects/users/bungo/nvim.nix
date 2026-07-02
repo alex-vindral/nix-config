@@ -14,6 +14,7 @@
       home.sessionVariables = {
         EDITOR = "nvim";
         VISUAL = "nvim";
+        MANPAGER = "nvim +Man!";
       };
 
       programs.git.settings.core.editor = "nvim";

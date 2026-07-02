@@ -13,6 +13,7 @@
         den.batteries.primary-user # For wheel
 
         # Core — every host
+        bungo.aspects.atuin
         bungo.aspects.btop
         bungo.aspects.claude
         bungo.aspects.direnv

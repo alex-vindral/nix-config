@@ -5,15 +5,19 @@
     includes = [
       # bungo.aspects.kanata
       bungo.aspects.audio
+      bungo.aspects.avahi
       bungo.aspects.awscli
       bungo.aspects.bluetooth
       bungo.aspects.docker
       bungo.aspects.easyeffects
       bungo.aspects.i3
+      bungo.aspects.krita
       bungo.aspects.logitech
+      bungo.aspects.mpv
       bungo.aspects.remmina
       bungo.aspects.s3
       bungo.aspects.slack
+      bungo.aspects.solaar
       bungo.aspects.sops
       bungo.aspects.spotify
       bungo.aspects.sway

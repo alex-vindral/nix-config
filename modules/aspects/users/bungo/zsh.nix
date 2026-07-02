@@ -18,6 +18,9 @@
             setopt PUSHD_IGNORE_DUPS # don't keep duplicate dirs on the stack
             setopt PUSHD_SILENT      # don't print the stack after pushd/popd
             setopt PUSHD_MINUS       # make `cd -N` count back from the top (cd -2 = 2 dirs ago)
+
+            bindkey '^[[1;5C' forward-word   # ctrl+right -> jump forward a word
+            bindkey '^[[1;5D' backward-word  # ctrl+left  -> jump backward a word
           '';
         };
         starship = {

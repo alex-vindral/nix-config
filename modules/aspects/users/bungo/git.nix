@@ -1,6 +1,10 @@
 {...}: {
   bungo.aspects.git = {
     homeManager = {
+      home.shellAliases = {
+        gs = "git status";
+      };
+
       programs.git = {
         enable = true;
         settings = {

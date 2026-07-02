@@ -18,6 +18,8 @@
           input."*" = {
             xkb_layout = "se";
             xkb_variant = "nodeadkeys";
+            repeat_delay = "250";
+            repeat_rate = "40";
           };
 
           window = {
@@ -118,6 +120,26 @@
       # enabled on a host (e.g. burken). You can still pick i3 at the ly
       # login screen; this only sets the preselected default.
       services.displayManager.defaultSession = lib.mkForce "sway";
+
+      # Screen sharing for Electron/web apps (teams-for-linux, etc.) on
+      # wlroots. The NixOS sway module already enables xdg.portal with gtk as
+      # the default backend; we only add the wlr ScreenCast backend and point
+      # ScreenCast at it. PipeWire is enabled via the audio aspect.
+      #
+      # wlr needs a chooser to pick the output/region. The NixOS module starts
+      # the portal with an explicit `--config`, so the per-user
+      # ~/.config/xdg-desktop-portal-wlr/config is ignored -- the chooser MUST
+      # be set here via wlr.settings. Without it the portal probes
+      # wofi/rofi/etc on a restricted PATH, finds nothing, and dies with
+      # "no output found". slurp (absolute store path) handles selection.
+      xdg.portal = {
+        wlr.enable = true;
+        wlr.settings.screencast = {
+          chooser_type = "simple";
+          chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
+        };
+        config.sway."org.freedesktop.impl.portal.ScreenCast" = ["wlr"];
+      };
 
       environment.systemPackages = with pkgs; [
         swaylock

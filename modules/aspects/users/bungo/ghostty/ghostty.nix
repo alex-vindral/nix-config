@@ -8,19 +8,17 @@
       programs.ghostty = {
         enable = true;
         settings = {
-          shell-integration-features = "cursor,sudo,title,ssh-env,ssh-terminfo"; # For proper ssh support
-          theme = "Kanagawa Wave";
-          font-family = "MesloLGS Nerd Font";
+          app-notifications = "no-clipboard-copy";
           background-opacity = 0.98;
           clipboard-read = "allow";
           clipboard-write = "allow";
+          custom-shader = ["${./cursor_tail_glow.glsl}"];
+          font-family = "MesloLGS Nerd Font";
+          keybind = ["ctrl++=unbind" "ctrl+.=increase_font_size:1"];
           resize-overlay = "never";
-          app-notifications = "no-clipboard-copy";
+          shell-integration-features = "cursor,sudo,title,ssh-env,ssh-terminfo"; # For proper ssh support
+          theme = "Kanagawa Wave";
           window-decoration = "none";
-          keybind = [
-            "ctrl++=unbind"
-            "ctrl+?=increase_font_size:1"
-          ];
         };
       };
     };
