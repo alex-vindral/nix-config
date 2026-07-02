@@ -175,7 +175,9 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
    float minDist = currentCursor.w * THRESHOLD_MIN_DISTANCE;
    float progress = clamp((iTime - iTimeCursorChange) / DURATION, 0.0, 1.0);
-   if (lineLength > minDist && progress < 1.0) {
+   // iFocus is 1.0 while the window is focused, 0.0 otherwise. Skipping the trail when
+   // unfocused means the final blur frame renders clean instead of freezing a partial trail.
+   if (lineLength > minDist && progress < 1.0 && iFocus > 0.5) {
       // ANIMATION logic
 
       float head_eased = 0.0;

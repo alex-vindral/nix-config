@@ -11,6 +11,12 @@
       nixpkgs.config.allowUnfree = true;
       home.packages = [inputs.nix-nvim.packages.${pkgs.system}.nvim];
 
+      home.shellAliases = {
+        "nivm" = "nvim";
+        "vi" = "nvim";
+        "vim" = "nvim";
+      };
+
       home.sessionVariables = {
         EDITOR = "nvim";
         VISUAL = "nvim";
