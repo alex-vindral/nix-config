@@ -12,7 +12,7 @@
           background-opacity = 0.98;
           clipboard-read = "allow";
           clipboard-write = "allow";
-          custom-shader = ["${./cursor_tail_glow.glsl}"];
+          custom-shader = ["${./cursor_focus.glsl}" "${./cursor_tail_glow.glsl}"];
           font-family = "MesloLGS Nerd Font";
           keybind = ["ctrl++=unbind" "ctrl+.=increase_font_size:1"];
           resize-overlay = "never";
