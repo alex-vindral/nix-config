@@ -36,6 +36,9 @@
       # Add another host name here when a new graphical host comes online.
       ++ lib.optionals (host.name == "burken") [
         bungo.aspects.desktop
+      ]
+      ++ lib.optionals (builtins.elem host.name ["burken" "wsl"]) [
+        bungo.aspects.docker
       ];
 
     homeManager = {pkgs, ...}: {
