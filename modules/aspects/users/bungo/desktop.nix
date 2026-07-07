@@ -8,7 +8,6 @@
       bungo.aspects.avahi
       bungo.aspects.awscli
       bungo.aspects.bluetooth
-      bungo.aspects.docker
       bungo.aspects.easyeffects
       bungo.aspects.i3
       bungo.aspects.krita
