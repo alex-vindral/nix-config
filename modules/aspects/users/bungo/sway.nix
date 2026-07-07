@@ -4,7 +4,10 @@
       den.aspects.desktopEnvironment.ly
     ];
 
-    homeManager = {pkgs, ...}: {
+    homeManager = {pkgs, ...}: let
+      # Doubles as the status-bar hint while the leader is active.
+      screenshotMode = "screenshot  [r]egion  [w]indow  [o]utput  [d]record  [Esc]cancel";
+    in {
       wayland.windowManager.sway = {
         enable = true;
         wrapperFeatures.gtk = true;
@@ -40,7 +43,8 @@
             "${modifier}+q" = "kill";
             "${modifier}+Escape" = "exec swaylock";
 
-            "${modifier}+Shift+s" = ''exec grim -g "$(slurp)" - | wl-copy'';
+            # Screenshot/record leader; capture keys live in `modes` below.
+            "${modifier}+s" = ''mode "${screenshotMode}"'';
 
             "${modifier}+Shift+e" = "exit";
             "${modifier}+Shift+r" = "reload";
@@ -76,6 +80,19 @@
             "${modifier}+Shift+8" = "move container to workspace number 8";
             "${modifier}+Shift+9" = "move container to workspace number 9";
             "${modifier}+Shift+0" = "move container to workspace number 10";
+          };
+
+          # Screenshot/record leader (enter via Mod+s). Each key captures then
+          # returns to default. satty annotates + copies; recordings save to
+          # ~/Videos and d toggles (second press SIGINTs wl-screenrec to finalize).
+          modes.${screenshotMode} = {
+            "r" = ''exec grim -g "$(slurp)" - | satty --filename - --copy-command wl-copy ; mode "default"'';
+            "w" = ''exec grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp)" - | satty --filename - --copy-command wl-copy ; mode "default"'';
+            "o" = ''exec grim -g "$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | satty --filename - --copy-command wl-copy ; mode "default"'';
+            "d" = ''exec sh -c 'if pkill -INT wl-screenrec; then exit 0; fi; mkdir -p ~/Videos; wl-screenrec -g "$(slurp)" -f ~/Videos/recording-$(date +%s).mp4' ; mode "default"'';
+
+            "Escape" = ''mode "default"'';
+            "Return" = ''mode "default"'';
           };
         };
       };
@@ -146,6 +163,9 @@
         swayidle
         grim
         slurp
+        satty # annotation editor for screenshots (flameshot-like)
+        wl-screenrec # VA-API hw-accelerated region screen recording
+        jq # window/output geometry queries for grim -g
         wl-clipboard
         rofi
         i3status
