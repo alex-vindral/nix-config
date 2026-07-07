@@ -1,8 +1,12 @@
-{...}: {
+{wsl, ...}: {
   # WSL host. Activated by `den.hosts.x86_64-linux.wsl.wsl.enable = true`
   # in modules/den.nix — the wsl-host-aspect battery loads NixOS-WSL.
   # This aspect only carries the small, tty-only non-WSL specifics.
   den.aspects.wsl = {
+    includes = [
+      wsl.aspects.sops # decrypts bungo's ssh key to /home/bungo/.ssh/id_ed25519
+    ];
+
     nixos = {
       nixpkgs.config.allowUnfree = true;
       nix.settings.experimental-features = [

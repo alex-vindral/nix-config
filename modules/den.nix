@@ -5,11 +5,12 @@
   ...
 }: {
   # Namespaces: `eg` (example), `bungo` for user-specific aspects,
-  # `burken` for host-specific aspects.
+  # `burken` and `wsl` for host-specific aspects.
   imports = [
     (inputs.den.namespace "eg" true)
     (inputs.den.namespace "bungo" true)
     (inputs.den.namespace "burken" true)
+    (inputs.den.namespace "wsl" true)
   ];
 
   # Enables den's angle-bracket syntax in modules.
