@@ -11,9 +11,13 @@
       bungo.aspects.easyeffects
       bungo.aspects.i3
       bungo.aspects.krita
+      bungo.aspects.ladybird
       bungo.aspects.logitech
       bungo.aspects.mpv
-      bungo.aspects.remmina
+      bungo.aspects.orion
+      bungo.aspects.printing
+      bungo.aspects.freerdp
+      bungo.aspects.rdp
       bungo.aspects.s3
       bungo.aspects.slack
       bungo.aspects.solaar

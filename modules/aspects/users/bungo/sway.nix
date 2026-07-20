@@ -7,6 +7,9 @@
     homeManager = {pkgs, ...}: let
       # Doubles as the status-bar hint while the leader is active.
       screenshotMode = "screenshot  [r]egion  [w]indow  [o]utput  [d]record  [Esc]cancel";
+      # swaylock-effects: screenshot the screen then blur it (i3lock-blur equivalent).
+      lockCmd = "swaylock -f --screenshots --clock --indicator --effect-blur 7x5";
+      #  --effect-vignette 0.5:0.5 --fade-in 0.2
     in {
       wayland.windowManager.sway = {
         enable = true;
@@ -32,7 +35,7 @@
 
           startup = [
             {
-              command = "swayidle -w timeout 600 'swaylock -f' before-sleep 'swaylock -f'";
+              command = "swayidle -w timeout 600 '${lockCmd}' before-sleep '${lockCmd}'";
             }
           ];
 
@@ -41,7 +44,7 @@
             "${modifier}+d" = "exec rofi -show drun";
             "${modifier}+f" = "fullscreen toggle";
             "${modifier}+q" = "kill";
-            "${modifier}+Escape" = "exec swaylock";
+            "${modifier}+Escape" = "exec ${lockCmd}";
 
             # Screenshot/record leader; capture keys live in `modes` below.
             "${modifier}+s" = ''mode "${screenshotMode}"'';
@@ -159,7 +162,7 @@
       };
 
       environment.systemPackages = with pkgs; [
-        swaylock
+        swaylock-effects
         swayidle
         grim
         slurp

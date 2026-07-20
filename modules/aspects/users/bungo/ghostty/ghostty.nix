@@ -13,7 +13,7 @@
           clipboard-read = "allow";
           clipboard-write = "allow";
           custom-shader = ["${./cursor_focus.glsl}" "${./cursor_tail_glow.glsl}"];
-          font-family = "MesloLGS Nerd Font";
+          font-family = "MesloLGS Nerd Font Mono";
           keybind = ["ctrl++=unbind" "ctrl+.=increase_font_size:1"];
           resize-overlay = "never";
           shell-integration-features = "cursor,sudo,title,ssh-env,ssh-terminfo"; # For proper ssh support

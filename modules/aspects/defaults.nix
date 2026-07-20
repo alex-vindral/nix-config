@@ -11,6 +11,15 @@
     darwin.system.stateVersion = 6;
     nixos.system.stateVersion = "25.11";
     homeManager.home.stateVersion = "25.11";
+
+    # nixos.nix.settings.auto-optimise-store = true;
+    nixos.programs.nh = {
+      enable = true;
+      clean = {
+        enable = true;
+        extraArgs = "--keep 5 --keep-since 7d";
+      };
+    };
   };
 
   # These are functions that produce configs

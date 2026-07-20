@@ -1,5 +1,9 @@
 {...}: {
   bungo.aspects.s3 = {
+    nixos = {
+      programs.fuse.enable = true;
+    };
+
     homeManager = {
       config,
       pkgs,
