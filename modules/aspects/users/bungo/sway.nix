@@ -104,6 +104,19 @@
         enable = true;
         package = pkgs.rofi;
       };
+
+      systemd.user.services.wl-clip-persist = {
+        Unit = {
+          Description = "Persist Wayland clipboard after source app exits";
+          PartOf = ["graphical-session.target"];
+          After = ["graphical-session.target"];
+        };
+        Install.WantedBy = ["graphical-session.target"];
+        Service = {
+          ExecStart = "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular";
+          Restart = "on-failure";
+        };
+      };
     };
 
     nixos = {

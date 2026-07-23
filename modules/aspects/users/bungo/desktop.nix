@@ -8,7 +8,9 @@
       bungo.aspects.avahi
       bungo.aspects.awscli
       bungo.aspects.bluetooth
+      bungo.aspects.dolphin
       bungo.aspects.easyeffects
+      bungo.aspects.freerdp
       bungo.aspects.i3
       bungo.aspects.krita
       bungo.aspects.ladybird
@@ -16,7 +18,6 @@
       bungo.aspects.mpv
       bungo.aspects.orion
       bungo.aspects.printing
-      bungo.aspects.freerdp
       bungo.aspects.rdp
       bungo.aspects.s3
       bungo.aspects.slack

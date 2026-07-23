@@ -38,7 +38,14 @@
         "rdp  "
         + lib.concatMapStringsSep "  " (m: "[${m.key}]${m.label}") machines
         + "  [Esc]cancel";
-      rdpConnect = m: ''exec ${pkgs.freerdp}/bin/xfreerdp /v:${m.host} /u:${m.user} /p:"$(cat ${config.sops.secrets.${m.secret}.path})" /gfx:progressive /network:lan /size:3840x2160 -wallpaper -themes -window-drag -menu-anims +clipboard /cert:ignore /sound ; mode "default"'';
+      rdpScript = pkgs.writeShellScript "rdp-connect" ''
+        host="$1"; user="$2"; secret="$3"
+        exec ${pkgs.freerdp}/bin/xfreerdp \
+          /v:"$host" /u:"$user" /p:"$(cat "$secret")" \
+          /gfx:progressive /network:lan /size:3840x2160 \
+          -wallpaper -themes -window-drag -menu-anims +clipboard /cert:ignore /sound
+      '';
+      rdpConnect = m: ''exec ${rdpScript} ${m.host} ${m.user} ${config.sops.secrets.${m.secret}.path} ; mode "default"'';
     in {
       keybindings."Mod4+r" = ''mode "${rdpMode}"'';
       modes.${rdpMode} =
