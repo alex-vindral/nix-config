@@ -4,23 +4,26 @@
   den,
   ...
 }: {
-  # Namespaces: `eg` (example), `bungo` for user-specific aspects,
-  # `burken` and `wsl` for host-specific aspects.
   imports = [
-    (inputs.den.namespace "eg" true)
+    # User
     (inputs.den.namespace "bungo" true)
+    # Host
     (inputs.den.namespace "burken" true)
+    (inputs.den.namespace "meshy" true)
     (inputs.den.namespace "wsl" true)
   ];
 
   # Enables den's angle-bracket syntax in modules.
   _module.args.__findFile = den.lib.__findFile;
 
-  # Hosts and homes
-  den.hosts.x86_64-linux.burken.users.bungo = {};
-  den.hosts.x86_64-linux.wsl = {
-    wsl.enable = true; # provided by den.batteries' wsl-host-aspect
-    users.bungo = {};
+  den.hosts.x86_64-linux = {
+    burken.users.bungo = {};
+    meshy.users.bungo = {};
+
+    wsl = {
+      wsl.enable = true; # provided by den.batteries' wsl-host-aspect
+      users.bungo = {};
+    };
   };
   den.homes.x86_64-linux.bungo = {};
 

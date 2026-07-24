@@ -1,10 +1,6 @@
-{den, ...}: {
+{...}: {
   bungo.aspects.sway = {
-    includes = [
-      den.aspects.desktopEnvironment.ly
-    ];
-
-    homeManager = {pkgs, ...}: let
+    homeManager = {...}: let
       # Doubles as the status-bar hint while the leader is active.
       screenshotMode = "screenshot  [r]egion  [w]indow  [o]utput  [d]record  [Esc]cancel";
       # swaylock-effects: screenshot the screen then blur it (i3lock-blur equivalent).
@@ -99,93 +95,13 @@
           };
         };
       };
-
-      programs.rofi = {
-        enable = true;
-        package = pkgs.rofi;
-      };
-
-      systemd.user.services.wl-clip-persist = {
-        Unit = {
-          Description = "Persist Wayland clipboard after source app exits";
-          PartOf = ["graphical-session.target"];
-          After = ["graphical-session.target"];
-        };
-        Install.WantedBy = ["graphical-session.target"];
-        Service = {
-          ExecStart = "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular";
-          Restart = "on-failure";
-        };
-      };
     };
 
     nixos = {
-      lib,
-      pkgs,
-      ...
-    }: {
       programs.sway = {
         enable = true;
         wrapperFeatures.gtk = true;
-        # WLR_DRM_DEVICES must be a literal /dev/dri/cardN path -- wlroots/mesa
-        # break on symlinks (e.g. /dev/dri/intel) and on paths containing `:`
-        # (the env var is colon-separated). cardN numbering shuffles across
-        # boots, so we resolve the udev-managed /dev/dri/intel symlink to its
-        # current target here, in the sway wrapper, before exec'ing sway.
-        extraSessionCommands = ''
-          if [ -e /dev/dri/intel ]; then
-            export WLR_DRM_DEVICES="$(${pkgs.coreutils}/bin/readlink -f /dev/dri/intel)"
-          fi
-        '';
       };
-
-      environment.sessionVariables = {
-        SWAY_UNSUPPORTED_GPU = "1";
-        # Default EGL/GLX/Vulkan to Mesa so wlroots doesn't open nvidia nodes
-        # during vendor enumeration. Per-app nvidia offload still works by
-        # overriding these (see `nvidia-offload` wrapper).
-        __EGL_VENDOR_LIBRARY_FILENAMES = "/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json";
-        __GLX_VENDOR_LIBRARY_NAME = "mesa";
-        VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
-      };
-
-      # mkForce so the sway aspect wins over i3's mkDefault when both are
-      # enabled on a host (e.g. burken). You can still pick i3 at the ly
-      # login screen; this only sets the preselected default.
-      services.displayManager.defaultSession = lib.mkForce "sway";
-
-      # Screen sharing for Electron/web apps (teams-for-linux, etc.) on
-      # wlroots. The NixOS sway module already enables xdg.portal with gtk as
-      # the default backend; we only add the wlr ScreenCast backend and point
-      # ScreenCast at it. PipeWire is enabled via the audio aspect.
-      #
-      # wlr needs a chooser to pick the output/region. The NixOS module starts
-      # the portal with an explicit `--config`, so the per-user
-      # ~/.config/xdg-desktop-portal-wlr/config is ignored -- the chooser MUST
-      # be set here via wlr.settings. Without it the portal probes
-      # wofi/rofi/etc on a restricted PATH, finds nothing, and dies with
-      # "no output found". slurp (absolute store path) handles selection.
-      xdg.portal = {
-        wlr.enable = true;
-        wlr.settings.screencast = {
-          chooser_type = "simple";
-          chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
-        };
-        config.sway."org.freedesktop.impl.portal.ScreenCast" = ["wlr"];
-      };
-
-      environment.systemPackages = with pkgs; [
-        swaylock-effects
-        swayidle
-        grim
-        slurp
-        satty # annotation editor for screenshots (flameshot-like)
-        wl-screenrec # VA-API hw-accelerated region screen recording
-        jq # window/output geometry queries for grim -g
-        wl-clipboard
-        rofi
-        i3status
-      ];
     };
   };
 }

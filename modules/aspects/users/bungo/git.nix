@@ -3,6 +3,7 @@
     homeManager = {
       home.shellAliases = {
         gs = "git status";
+        ga = "git add";
       };
 
       programs.git = {

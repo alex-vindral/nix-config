@@ -1,26 +1,14 @@
-{burken, ...}: {
-  den.aspects.burken = {
+{meshy, ...}: {
+  den.aspects.meshy = {
     includes = [
-      burken.aspects.system
-      burken.aspects.nvidia
-      burken.aspects.igpu
-      burken.aspects.wayland-gpu
-      burken.aspects.vfio
-      burken.aspects.sops
+      meshy.aspects.system
+      meshy.aspects.nvidia
+      meshy.aspects.wayland-gpu
+      meshy.aspects.sops
     ];
 
     nixos = {pkgs, ...}: {
       programs.nix-ld.enable = true;
-
-      # iGPU drives the display; dGPU is used on demand via `nvidia-offload`.
-      hardware.nvidia.prime = {
-        offload = {
-          enable = true;
-          enableOffloadCmd = true;
-        };
-        intelBusId = "PCI:0:2:0";
-        nvidiaBusId = "PCI:2:0:0";
-      };
 
       nixpkgs.config.allowUnfree = true;
       nix.settings.experimental-features = [
@@ -35,7 +23,12 @@
       };
 
       networking.networkmanager.enable = true;
+      networking.networkmanager.wifi.powersave = false;
       users.users.bungo.extraGroups = ["networkmanager"];
+
+      # Intel WiFi firmware + module.
+      hardware.firmware = [pkgs.linux-firmware];
+      boot.kernelModules = ["iwlwifi"];
 
       time.timeZone = "Europe/Stockholm";
       console = {

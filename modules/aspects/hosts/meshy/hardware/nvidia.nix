@@ -1,5 +1,5 @@
 {...}: {
-  burken.aspects.nvidia = {
+  meshy.aspects.nvidia = {
     nixos = {config, ...}: {
       services.xserver.videoDrivers = ["nvidia"];
 
